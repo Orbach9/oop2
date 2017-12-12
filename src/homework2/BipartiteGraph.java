@@ -42,21 +42,31 @@ public class BipartiteGraph<T> {
     /**
      * @requires nodes nodeLable!=null, addBlackNode(nodeLable) and 
      * addWhiteNode(nodeLable) have'nt been called before
-     * 
+     * @return true if succeeded, false if failed
      */    
-    public void addBlackNode(T nodeLable) {
+    public boolean addBlackNode(T nodeLable) {
     	Node newNode = new Node(nodeLable);
+    	if(blackNodes.contains(nodeLable) || whiteNodes.contains(nodeLable)) {
+    		System.out.println("Node label " + nodeLable+" Already exists");
+    		return false;
+    	}
     	blackNodes.add(newNode);
+    	return true;
     }
     
     /**
      * @requires nodes nodeLable!=null, addBlackNode(nodeLable) and 
      * addWhiteNode(nodeLable) have'nt been called before
-     * 
+     * @return true if succeeded, false if failed
      */
-    public void addWhiteNode(T nodeLable) {
+    public boolean addWhiteNode(T nodeLable) {
     	Node newNode = new Node(nodeLable);
+    	if(blackNodes.contains(nodeLable) || whiteNodes.contains(nodeLable)) {
+    		System.out.println("Node label " + nodeLable+" Already exists");
+    		return false;
+    	}
     	whiteNodes.add(newNode);
+    	return true;
     }
 
     /**
@@ -98,9 +108,13 @@ public class BipartiteGraph<T> {
 
         if(containsNode(blackNodes, parentName) == null) {
         	parentNode = containsNode(whiteNodes, parentName);
+        	if (parentNode == null) {
+        		System.out.println("Parent node doesn't exist");
+        		return;
+        	}
         	childNode = containsNode(blackNodes, childName);
         	if (childNode == null) {
-        		System.out.println("parent and child are both white");
+        		System.out.println("Elegal Parameters");
         		return;
         	}
         } else {
@@ -108,12 +122,20 @@ public class BipartiteGraph<T> {
         	parentNode = containsNode(blackNodes, parentName); 
         	childNode = containsNode(whiteNodes,childName);
         	if (childNode == null) {
-        		System.out.println("parent and child are both black");
+        		System.out.println("Elegal Parameters");
         		return;
         	}
-        } 
-        
-       
+        }         
+        boolean isLegal = childNode.checkIfLegalEdge(edgeLabel,false/*not an outgoing edge*/);
+        if (isLegal == false) {
+        	System.out.println("child already has an incoming edge labled" + edgeLabel);
+        	return;
+        }
+        isLegal = parentNode.checkIfLegalEdge(edgeLabel,true/*outgoing edge*/);       
+        if (isLegal == false) {
+        	System.out.println("parent already has an outgoing edge labled" + edgeLabel);
+        	return;
+        }
         newEdge = new Edge(edgeLabel, parentNode, childNode);
         parentNode.addOutgoingEdge(newEdge);
         childNode.addIncomingEdge(newEdge);
@@ -172,100 +194,70 @@ public class BipartiteGraph<T> {
 		return parentList;
 	}
 
-
-
-
-
-
-	// ********************************************************************************************************
-    // TODO: Why do we need this? my func addEdge adds new edge only if its black to white/white to black
-    
-    /**
-     * @requires blackNodes.contains(parentName) && whiteNodes.contains(childName)
-     * @modifies this
-     */    
-    public void addEdgeBlackToWhite(T edgeLabel, T parentName, T childName) {
-    	int parentIndex=0;
-    	int childIndex=0;
-    	boolean legalParent=false;
-    	boolean legalChild=false;
-    	//check if label is legal:
-    	for (int i=0; i<blackNodes.size();i++) {
-    		if(blackNodes.get(i).getLabel().equals(parentName)) {
-    			parentIndex = i;
-    			if(!blackNodes.get(i).getOutgoingEdges().contains(edgeLabel)) {
-    				legalParent = true;
-    			}    			
-    			break;
-    		}
-    	}
-    	for (int i=0; i<whiteNodes.size();i++) {
-    		if(whiteNodes.get(i).getLabel().equals(childName)) {
-    			childIndex = i;
-    			if(!whiteNodes.get(i).getIncomingEdges().contains(edgeLabel)) {
-    				legalChild = true;
-    			}    			
-    			break;
-    		}
-    	}
-    	
-    	if (!legalChild ) {
-    		System.out.println("Child already has an edge with this label" );
-    		return;
-    	}
-    	if (!legalParent) {
-    		System.out.println("Parent already has an edge with this label" );
-    		return;
-    	}
-    	//legal, add
-    	Edge newEdge = new Edge(edgeLabel,blackNodes.get(parentIndex),whiteNodes.get(childIndex));
-    	blackNodes.get(parentIndex).addIncomingEdge(newEdge);
-    	whiteNodes.get(childIndex).addOutgoingEdge(newEdge);
-    }
-    
-    /**
-     * @requires blackNodes.contains(childName) && whiteNodes.contains(parentName)
-     * @modifies this
-     */    
-    public void addEdgeWhiteToBlack(T edgeLabel, T parentName, T childName) {
-    	int parentIndex=0;
-    	int childIndex=0;
-    	boolean legalParent=false;
-    	boolean legalChild=false;
-    	//check if lable is legal:
-    	for (int i=0; i<whiteNodes.size();i++) {
-    		if(whiteNodes.get(i).getLabel().equals(parentName)) {
-    			parentIndex = i;
-    			if(!whiteNodes.get(i).getOutgoingEdges().contains(edgeLabel)) {
-    				legalParent = true;
-    			}    			
-    			break;
-    		}
-    	}
-    	for (int i=0; i<blackNodes.size();i++) {
-    		if(blackNodes.get(i).getLabel().equals(childName)) {
-    			childIndex = i;
-    			if(!blackNodes.get(i).getIncomingEdges().contains(edgeLabel)) {
-    				legalChild = true;
-    			}    			
-    			break;
-    		}
-    	}
-    	
-    	if (!legalChild ) {
-    		System.out.println("Child already has an edge with this label" );
-    		return;
-    	}
-    	
-    	if (!legalParent) {
-    		System.out.println("Parent already has an edge with this label" );
-    		return;
-    	}
-    	
-    	//legal, add
-    	Edge newEdge = new Edge(edgeLabel,whiteNodes.get(parentIndex),blackNodes.get(childIndex));
-    	whiteNodes.get(parentIndex).addIncomingEdge(newEdge);
-    	blackNodes.get(childIndex).addOutgoingEdge(newEdge);
-    }
+	/**
+	 * @requires node labled parentName has an outgoing edge labeled edgeLabel,
+	 *  parent node labeled parentName exists
+	 * @return child node of parent node labeled parentName with edge labeled edgeLabel between them
+	 */
+	public Node<T> GetChildByEdgeLabel (T parentName , T edgeLabel) {
+		Node parentNode = containsNode(whiteNodes,parentName);
+		if (parentNode == null) {
+			parentNode = containsNode(blackNodes,parentName);
+			if (parentNode  == null) {
+				System.out.println("Parent doesn't exist");
+				return null;
+			}
+		}
+		
+		if(!parentNode.getOutgoingEdges().contains(edgeLabel)) {
+			System.out.println("Parent doesn't have an outgoing edge labeled: "+edgeLabel);
+			return null;
+		}
+		Edge edge = null;
+		for (int i = 0; i<parentNode.getOutgoingEdges().size();i++) {
+			Edge cur = (Edge)parentNode.getOutgoingEdges().get(i);
+			if(cur.getLabel().equals(edgeLabel)) {
+				edge = cur;
+			}
+		}
+		if (edge == null) {
+			System.out.println("Node labeled: "+parentName + "doesn't have an edge labeled: " + edgeLabel);
+			return null;
+		}
+		return edge.getEndNode();		
+	}
+	
+	/**
+	 * @requires node labeled childName has an incoming edge labeled edgeLabel,
+	 *  node labeled childName exists
+	 * @return parent node of child node labeled childName with edge labeled edgeLabel between them
+	 */
+	public Node<T> GetParentByEdgeLabel (T childName , T edgeLabel) {
+		Node childNode = containsNode(whiteNodes,childName);
+		if (childNode == null) {
+			childNode = containsNode(blackNodes,childName);
+			if (childNode  == null) {
+				System.out.println("Child doesn't exist");
+				return null;
+			}
+		}
+		
+		if(!childNode.getIncomingEdges().contains(edgeLabel)) {
+			System.out.println("Child doesn't have an incoming edge labeled: "+edgeLabel);
+			return null;
+		}
+		Edge edge = null;
+		for (int i = 0; i<childNode.getIncomingEdges().size();i++) {
+			Edge cur = (Edge)childNode.getIncomingEdges().get(i);
+			if(cur.getLabel().equals(edgeLabel)) {
+				edge = cur;
+			}
+		}
+		if (edge == null) {
+			System.out.println("Node labeled: "+childName + "doesn't have an edge labeled: " + edgeLabel);
+			return null;
+		}
+		return edge.getStartNode();		
+	}
     
 }

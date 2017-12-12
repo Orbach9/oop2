@@ -80,4 +80,20 @@ public class Node<T> {
     	this.incomingEdges.add(newEdge);
     }
 
+    /*
+     * */
+    public boolean checkIfLegalEdge(T lable , boolean isOutgoing) {
+    	if (isOutgoing) {
+    		if (this.getOutgoingEdges().contains(lable)) {
+    			return false;
+    		}
+    		return true;
+    	} else {
+    		if (this.getIncomingEdges().contains(lable)) {
+    			return false;
+    		}
+    		return true;
+    	}
+    }
 }
+
