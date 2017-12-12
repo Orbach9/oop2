@@ -15,9 +15,7 @@ public class BipartiteGraphTestDriver {
      * @effects Constructs a new test driver.
      */
     public BipartiteGraphTestDriver () {
-    	// TODO: Implement this constructor
-       
-       
+    	graphs = new HashMap<String, BipartiteGraph<String>>();
     }
 
     
@@ -31,7 +29,6 @@ public class BipartiteGraphTestDriver {
     	BipartiteGraph bGraph = new BipartiteGraph(graphName);        
     	graphs.put(graphName, bGraph);
     }
-
     
     /**
      * @requires createGraph(graphName)
@@ -48,10 +45,12 @@ public class BipartiteGraphTestDriver {
     		System.out.println("No graph by the Name: " + graphName);
     		return;
     	}
-    	graphs.get(graphName).addBlackNode(nodeName);   	
+
+    	boolean res = graphs.get(graphName).addBlackNode(nodeName);
+    	if (!res)
+            System.out.println("Failed to add black node!");
     }
 
-    
     /**
      * @requires createGraph(graphName)
      *           && nodeName != null
@@ -67,10 +66,11 @@ public class BipartiteGraphTestDriver {
     		System.out.println("No graph by the Name: " + graphName);
     		return;
     	}
-    	graphs.get(graphName).addWhiteNode(nodeName);    	
+    	boolean res = graphs.get(graphName).addWhiteNode(nodeName);
+    	if (!res)
+            System.out.println("Failed to add white node!");
     }
 
-    
     /**
      * @requires createGraph(graphName)
      *           && ((addBlackNode(parentName) && addWhiteNode(childName))
@@ -88,8 +88,13 @@ public class BipartiteGraphTestDriver {
     public void addEdge(String graphName,
     					String parentName, String childName, 
                         String edgeLabel) {
-    	
-    	
+
+        if (edgeLabel == null) {
+            System.out.println("edgeLabel is null!");
+            return;
+        }
+
+        graphs.get(graphName).addEdge(parentName, childName, edgeLabel);
     }
 
     
@@ -99,21 +104,40 @@ public class BipartiteGraphTestDriver {
      * 		   in the graph graphName, in alphabetical order.
      */
     public String listBlackNodes(String graphName) {
-    	//TODO: Implement this method
-    	return graphName;
-    	
+    	if (graphName == null || !graphs.containsKey(graphName)) {
+            System.out.println("graph name is Null or graph doesn't exist!");
+            return null;
+        }
+
+        List<Node<String>> blackNodes = graphs.get(graphName).getBlackNodes();
+        String blackNodesNames = null;
+
+        for (int i = 0; i < blackNodes.size(); i++) {
+            blackNodesNames = blackNodesNames.concat(blackNodes.get(i).getLabel()+ " ");
+        }
+
+    	return blackNodesNames;
     }
 
-    
     /**
      * @requires createGraph(graphName)
      * @return a space-separated list of the names of all the white nodes
      * 		   in the graph graphName, in alphabetical order.
      */
     public String listWhiteNodes(String graphName) {
-    	//TODO: Implement this method
-    	return graphName;
-    	
+    	if (graphName == null || !graphs.containsKey(graphName)) {
+            System.out.println("graph name is Null or graph doesn't exist!");
+            return null;
+        }
+
+        List<Node<String>> whiteNode = graphs.get(graphName).getWhiteNodes();
+        String whiteNodesNames = null;
+
+        for (int i = 0; i < whiteNode.size(); i++) {
+            whiteNodesNames = whiteNodesNames.concat(whiteNode.get(i).getLabel()+ " ");
+        }
+
+        return whiteNodesNames;
     }
 
     
@@ -123,9 +147,19 @@ public class BipartiteGraphTestDriver {
      * 		   parentName in the graph graphName, in alphabetical order.
      */
     public String listChildren(String graphName, String parentName) {
-    	//TODO: Implement this method
-    	return graphName;
-    	
+        if (graphName == null || !graphs.containsKey(graphName)) {
+            System.out.println("graph name is Null or graph doesn't exist!");
+            return null;
+        }
+
+        List<Node<String>> childList = graphs.get(graphName).GetChildList(parentName);
+        String childNames = null;
+
+        for (int i = 0; i < childList.size(); i++) {
+            childNames = childNames.concat(childList.get(i).getLabel()+ " ");
+        }
+
+        return childNames;
     }
 
     
@@ -135,9 +169,19 @@ public class BipartiteGraphTestDriver {
      * 		   childName in the graph graphName, in alphabetical order.
      */
     public String listParents(String graphName, String childName) {
-    	//TODO: Implement this method
-    	return graphName;
-    	
+        if (graphName == null || !graphs.containsKey(graphName)) {
+            System.out.println("graph name is Null or graph doesn't exist!");
+            return null;
+        }
+
+        List<Node<String>> parentList = graphs.get(graphName).GetParentList(childName);
+        String parentNames = null;
+
+        for (int i = 0; i < parentList.size(); i++) {
+            parentNames = parentNames.concat(parentList.get(i).getLabel()+ " ");
+        }
+
+        return parentNames;
     }
 
     
@@ -149,9 +193,12 @@ public class BipartiteGraphTestDriver {
      */
     public String getChildByEdgeLabel(String graphName, String parentName,
     								   String edgeLabel) {
-    	//TODO: Implement this method
-    	return graphName;
-    	
+        if (graphName == null || !graphs.containsKey(graphName)){
+            System.out.println("graph name is Null or graph doesn't exist!");
+            return null;
+        }
+
+    	return graphs.get(graphName).GetChildByEdgeLabel(parentName, edgeLabel).getLabel();
     }
 
     
@@ -163,8 +210,11 @@ public class BipartiteGraphTestDriver {
      */
     public String getParentByEdgeLabel(String graphName, String childName,
     									String edgeLabel) {
-    	//TODO: Implement this method
-    	return edgeLabel;
-    	
+        if (graphName == null || !graphs.containsKey(graphName)){
+            System.out.println("graph name is Null or graph doesn't exist!");
+            return null;
+        }
+
+        return graphs.get(graphName).GetParentByEdgeLabel(childName, edgeLabel).getLabel();
     }
 }
