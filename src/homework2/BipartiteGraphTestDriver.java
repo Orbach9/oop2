@@ -110,13 +110,22 @@ public class BipartiteGraphTestDriver {
         }
 
         List<Node<String>> blackNodes = graphs.get(graphName).getBlackNodes();
+        List<String> blackListString = new ArrayList<String>();
         String blackNodesNames = null;
 
         for (int i = 0; i < blackNodes.size(); i++) {
-            blackNodesNames = blackNodesNames.concat(blackNodes.get(i).getLabel()+ " ");
+            blackListString.add(blackNodes.get(i).getLabel());
         }
 
-    	return blackNodesNames;
+        Collections.sort(blackListString, String.CASE_INSENSITIVE_ORDER);
+
+        for (int i = 0; i < blackListString.size(); i++)
+            blackNodesNames = blackNodesNames.concat(blackListString.get(i)+" ");
+
+        if (blackNodesNames == null)
+            blackNodesNames = "";
+
+        return blackNodesNames;
     }
 
     /**
@@ -131,11 +140,20 @@ public class BipartiteGraphTestDriver {
         }
 
         List<Node<String>> whiteNode = graphs.get(graphName).getWhiteNodes();
+        List<String> whiteListString = new ArrayList<String>();
         String whiteNodesNames = null;
 
         for (int i = 0; i < whiteNode.size(); i++) {
-            whiteNodesNames = whiteNodesNames.concat(whiteNode.get(i).getLabel()+ " ");
+            whiteListString.add(whiteNode.get(i).getLabel());
         }
+
+        Collections.sort(whiteListString, String.CASE_INSENSITIVE_ORDER);
+
+        for (int i = 0; i < whiteListString.size(); i++)
+            whiteNodesNames = whiteNodesNames.concat(whiteListString.get(i)+" ");
+
+        if (whiteNodesNames == null)
+            whiteNodesNames = "";
 
         return whiteNodesNames;
     }
@@ -153,11 +171,20 @@ public class BipartiteGraphTestDriver {
         }
 
         List<Node<String>> childList = graphs.get(graphName).GetChildList(parentName);
+        List<String> childListString = new ArrayList<String>();
         String childNames = null;
 
         for (int i = 0; i < childList.size(); i++) {
-            childNames = childNames.concat(childList.get(i).getLabel()+ " ");
+            childListString.add(childList.get(i).getLabel());
         }
+
+        Collections.sort(childListString, String.CASE_INSENSITIVE_ORDER);
+
+        for (int i = 0; i < childListString.size(); i++)
+            childNames = childNames.concat(childListString.get(i)+" ");
+
+        if(childNames == null)
+            childNames = "";
 
         return childNames;
     }
@@ -175,12 +202,21 @@ public class BipartiteGraphTestDriver {
         }
 
         List<Node<String>> parentList = graphs.get(graphName).GetParentList(childName);
+        List<String> parentListString = new ArrayList<String>();
         String parentNames = null;
 
         for (int i = 0; i < parentList.size(); i++) {
-            parentNames = parentNames.concat(parentList.get(i).getLabel()+ " ");
+            parentListString.add(parentList.get(i).getLabel());
         }
 
+        Collections.sort(parentListString, String.CASE_INSENSITIVE_ORDER);
+
+        for (int i = 0; i < parentListString.size(); i++)
+            parentNames = parentNames.concat(parentListString.get(i)+" ");
+
+        if(parentNames == null)
+            parentNames = "";
+        
         return parentNames;
     }
 
