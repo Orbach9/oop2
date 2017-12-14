@@ -84,10 +84,13 @@ public class BipartiteGraphTest {
         driver.addEdge("graph2", "n2", "n4", "edge3");
         assertEquals("wrong parents", "n2", driver.listParents("graph2", "n4"));
         
+        //check alphabetic order
+        driver.addBlackNode("graph2", "a");
+        assertEquals("wrong Black nodes", "a n2 n3", driver.listBlackNodes("graph2"));
+        
     }
     
     
-    //  TODO: Add black-box tests
     
   
 }
