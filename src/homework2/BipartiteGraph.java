@@ -17,6 +17,7 @@ public class BipartiteGraph<T> {
     	Node tmpNode,curNode;
     	Edge curEdge,tmpEdge;
     	boolean isBlack;
+    	boolean isLegalEdge = false;
     	T tmpLabel;
     	for (int i=0; i<(blackNodes.size()+whiteNodes.size());i++) {
     		if (i<blackNodes.size()) {
@@ -60,11 +61,18 @@ public class BipartiteGraph<T> {
     			//check each edge has 2 different colors of nodes in it's ends -
     			//no need to check for outgoing and incoming - only one (that's all of the edges)
     			if (isBlack) {
-    				
-    				assert(this.containsNode(whiteNodes, (T) curEdge.getStartNode().getLabel()) != null);
+    				for(int k=0; k<whiteNodes.size(); k++) {
+    					if (curEdge.getStartNode().getLabel().equals(whiteNodes.get(k).getLabel()))
+    						isLegalEdge = true;
+    				}
     			} else {
-    				assert(this.containsNode(blackNodes, (T) curEdge.getStartNode().getLabel()) != null);
+    				for(int k=0; k<blackNodes.size(); k++) {
+    					if (curEdge.getStartNode().getLabel().equals(blackNodes.get(k).getLabel()))
+    						isLegalEdge = true;
+    				}
     			}
+    			assert(isLegalEdge);
+    			isLegalEdge = false;
     		}
     		for (int j=0; j<curNode.getOutgoingEdges().size(); j++) {
     			curEdge = (Edge) curNode.getOutgoingEdges().get(j);
