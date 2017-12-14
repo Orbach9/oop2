@@ -44,7 +44,7 @@ public class BipartiteGraph<T> {
      */    
     public boolean addBlackNode(T nodeLable) {
     	Node newNode = new Node(nodeLable);
-    	if(blackNodes.contains(nodeLable) || whiteNodes.contains(nodeLable)) {
+    	if(this.containsNode(blackNodes, nodeLable)!=null || this.containsNode(whiteNodes, nodeLable)!=null) {
     		System.out.println("Node label " + nodeLable+" Already exists");
     		return false;
     	}
@@ -59,7 +59,7 @@ public class BipartiteGraph<T> {
      */
     public boolean addWhiteNode(T nodeLable) {
     	Node newNode = new Node(nodeLable);
-    	if(blackNodes.contains(nodeLable) || whiteNodes.contains(nodeLable)) {
+    	if(this.containsNode(blackNodes, nodeLable)!=null|| this.containsNode(whiteNodes, nodeLable)!=null) {
     		System.out.println("Node label " + nodeLable+" Already exists");
     		return false;
     	}
@@ -74,8 +74,8 @@ public class BipartiteGraph<T> {
      */
     public Node<T> containsNode(List<Node<T>> nodes, T label) {
         for (Node node : nodes) {
-            if (node.getLabel() == label) {
-                return node;
+            if (node.getLabel().equals(label)) {
+            	return node;
             }
         }
         return null;
@@ -202,12 +202,12 @@ public class BipartiteGraph<T> {
 		if (parentNode == null) {
 			parentNode = containsNode(blackNodes,parentName);
 			if (parentNode  == null) {
-				System.out.println("Parent doesn't exist");
+				System.out.println("Parent: " +parentName+ " in graph: "+graphName+" doesn't exist");
 				return null;
 			}
 		}
 		
-		if(!parentNode.getOutgoingEdges().contains(edgeLabel)) {
+		if(!parentNode.containsEdge(parentNode.getOutgoingEdges(),edgeLabel)) {
 			System.out.println("Parent doesn't have an outgoing edge labeled: "+edgeLabel);
 			return null;
 		}
@@ -240,7 +240,7 @@ public class BipartiteGraph<T> {
 			}
 		}
 		
-		if(!childNode.getIncomingEdges().contains(edgeLabel)) {
+		if(!childNode.containsEdge(childNode.getIncomingEdges(),edgeLabel)) {
 			System.out.println("Child doesn't have an incoming edge labeled: "+edgeLabel);
 			return null;
 		}

@@ -95,5 +95,12 @@ public class Node<T> {
     		return true;
     	}
     }
+    public boolean containsEdge(List<Edge<T>> edges, T label) {
+    	for (int i=0; i<edges.size();i++) {
+    		if (edges.get(i).getLabel().equals(label))
+    			return true;
+    	}
+    	return false;
+    }
 }
 
