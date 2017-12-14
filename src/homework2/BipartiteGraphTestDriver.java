@@ -249,7 +249,12 @@ public class BipartiteGraphTestDriver {
             return "";
         }
 
-    	return graphs.get(graphName).GetChildByEdgeLabel(parentName, edgeLabel).getLabel();
+        Node child = graphs.get(graphName).GetChildByEdgeLabel(parentName, edgeLabel);
+        if (child == null)
+            return null;
+
+        String label = (String)(child.getLabel());
+    	return label;
     }
 
     
@@ -295,6 +300,12 @@ public class BipartiteGraphTestDriver {
             return "";
         }
 
-        return graphs.get(graphName).GetParentByEdgeLabel(childName, edgeLabel).getLabel();
+        Node parent = graphs.get(graphName).GetParentByEdgeLabel(childName, edgeLabel);
+        if (parent == null)
+            return null;
+
+        String label = (String)(parent.getLabel());
+
+        return label;
     }
 }

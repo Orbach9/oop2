@@ -6,7 +6,7 @@ import java.util.*;
  * Each node is point to a list of edges object and has a label.
  */
 
-public class Node<T> {
+public class Node<T>{
     private T label;
     private List<Edge<T>> outgoingEdges;
     private List<Edge<T>> incomingEdges;
