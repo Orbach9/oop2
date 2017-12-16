@@ -412,5 +412,7 @@ public class BipartiteGraph<T> {
 		checkRep();
 		return edge.getStartNode();		
 	}
+	
+	
     
 }
