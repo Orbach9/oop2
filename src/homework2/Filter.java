@@ -18,6 +18,6 @@ public class Filter<T> implements Simulatable<T>{
 	}
 	
 	public void simulate(BipartiteGraph<T> graph) {
-		Node myNode = graph.getWhiteNodes()
+		return;
 	}
 }
