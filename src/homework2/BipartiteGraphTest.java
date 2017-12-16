@@ -23,6 +23,7 @@ public class BipartiteGraphTest {
         
         //add an edge
         driver.addEdge("graph1", "n1", "n2", "edge");
+        driver.addEdge("graph1", "n1", "n2", "failEdge");
         
         //check neighbors
         assertEquals("wrong black nodes", "n1", driver.listBlackNodes("graph1"));
@@ -33,6 +34,7 @@ public class BipartiteGraphTest {
         assertEquals("wrong parents", "n1", driver.listParents ("graph1", "n2"));
         assertEquals("wrong parents", "", driver.listParents ("graph1", "n1"));
         assertEquals("wrong child", "", driver.getChildByEdgeLabel ("graph1", "n2","edge"));
+        assertEquals("Two edges from n1 to n2", "", driver.getChildByEdgeLabel ("graph1", "n1","failEdge"));
         
         
         
@@ -44,6 +46,7 @@ public class BipartiteGraphTest {
         //try to add illegal edges
         
         driver.addBlackNode("graph1", "n3");
+        //add edge from a black node to a black node;
         driver.addEdge("graph1", "n1", "n3", "edge2");
         assertEquals("wrong children", "n2", driver.listChildren ("graph1", "n1"));
         assertEquals("wrong children", "", driver.listChildren ("graph1", "n2"));

@@ -48,7 +48,7 @@ public class BipartiteGraphTestDriver {
 
     	boolean res = graphs.get(graphName).addBlackNode(nodeName);
     	if (!res)
-            System.out.println("Failed to add black node!");
+            System.out.println("Failed to add black node: " + nodeName + " to graph named: " + graphName);
     }
 
     /**
@@ -91,6 +91,28 @@ public class BipartiteGraphTestDriver {
 
         if (edgeLabel == null) {
             System.out.println("edgeLabel is null!");
+            return;
+        }
+        if (parentName == null) {
+            System.out.println("parentName is null!");
+            return;
+        }
+        if (childName == null) {
+            System.out.println("parentName is null!");
+            return;
+        }
+        if (!graphs.containsKey(graphName)) {
+            System.out.println("no graph by name: " + graphName);
+            return;
+        }
+        if (graphs.get(graphName).containsNode(graphs.get(graphName).getBlackNodes(), childName) == null &&
+        		graphs.get(graphName).containsNode(graphs.get(graphName).getWhiteNodes(), childName) == null) {
+            System.out.println("no node by name: " + childName);
+            return;
+        }
+        if (graphs.get(graphName).containsNode(graphs.get(graphName).getBlackNodes(), parentName) == null &&
+        		graphs.get(graphName).containsNode(graphs.get(graphName).getWhiteNodes(), parentName) == null) {
+            System.out.println("no node by name: " + parentName);
             return;
         }
 
