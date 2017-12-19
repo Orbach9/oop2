@@ -1,12 +1,9 @@
 package homework2;
 import java.util.*;
 
-/**
- * This class implements a node object for graph.
- * Each node is point to a list of edges object and has a label.
- */
+public class Node<T> {
 
-public class Node<T>{
+
     private T label;
     private List<Edge<T>> outgoingEdges;
     private List<Edge<T>> incomingEdges;
@@ -103,4 +100,6 @@ public class Node<T>{
     	return false;
     }
 }
+
+
 
